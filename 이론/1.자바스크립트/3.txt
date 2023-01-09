@@ -1,0 +1,1021 @@
+[INDEX]=====================================================================================
+
+<기본이론>
+76. 일급객체?
+77. 일급객체인데 어떻게하라고?
+78. "자바스크립트"는 "명령형, 함수형, 프로토타입 기반 객체지향 프로그래밍이다!"
+76. 일급객체?
+77. 일급객체인데 어떻게하라고?
+78. 함수는 "객체"이므로, "프로퍼티" 를 가진다.
+78. 추가. "오로지 함수 객체 만이", prototype 을 가진다.(상속을 위한) ==  constructor 내부메서드를 가지고 있는 것은 "함수 객체 뿐이다"
+79. "자바스크립트"는 "명령형, 함수형, 프로토타입 기반 객체지향 프로그래밍을 지원하는 "멀티 패러다임 프로그래밍이다"
+80. 다시보는 "객체지향 프로그래밍 한줄 요약"
+81. "상속" 과 "프로토타입"
+82. 상속할 함수를 만드는 방법 [ 생성자함수.prototype.메서드이름 = function(){ ... }]
+83. 프로토타입 객체 (prototype) 은 "상속" 을 구현하기 위해 사용된다.
+84. "상속자(부모)" 를 선택하기, 교체하기! [ getPrototypeOf , setPrototypeOf ]
+85. ESLint 와 Strict Mode
+86. Strict Mode 의 사용
+87. Strict Mode 의 기능
+88. 자바스크립트 객체의 분류
+89. 표준 빌트인 객체
+90. 굳이! 왜 표준빌트인 객체를 사용하여, string, number 등을 만드는가? 그냥 원시값으로 만들면 되는데?
+91. 전역객체
+92. 전역객체의 여러가지 프로퍼티
+93. 암묵적 전역
+94. 자기 참조 변수 this
+95. 자기 참조 변수 this 의 Strict Mode 에서의 사용
+96. 렉시컬 스코프 (= 정적 스코프)
+96. [추가] "스코프 체인"
+98. 실행 컨텍스트
+99. 실행컨텍스트의 기능과 순서
+[총 정리]
+99. 렉시컬 환경
+100. 함수는 자신의 내부 슬롯"에, " 자신이 정의된 환경(위치)"을 저장한다., "자신이 평가 될 때!" 저장한다. [실행 이전임.]
+101. 클로저
+102. 클로저의 조건
+103. 클로저 만들기  feat. 즉시 실행 함수
+104. 클로저의 사용이유
+105. 클래스
+106. JS 에서 클래스가 문법적 설탕인 이유
+107. 그럼에도 불구하고, 클래스와 생성자 함수의 차이
+108. 클래스의 생성
+109. 클래스도 함수이다
+110. 클래스의 구성성분
+111. constructor
+112. 프로토타입(상속) 메서드
+113. 정적 메서드
+114. 프로토타입 메서드와 정적 메서드의 차이
+115. 정적 메서드의 this 참조가 불가능한 이유 [ this 바인딩이 달라서 ]
+116. 표준 빌트인 객체의 정적 메서드
+117. 클래스의 인스턴스 생성 과정
+118. 접근자 프로퍼티
+119. 파라미터 없는 "클래스 필드"
+120. 접근 제한자 private 를 사용한 "클래스 필드"
+121. static 필드도 정의 가능하다
+122. 클래스의 상속과 확장
+123. 부모 클래스 = super class = base class
+124. 자식 클래스 = 파생(derived) class = sub class
+125. 동적 상속과 확장
+126. 생성자 함수를 상속받고 확장 할 수도 있다.
+127. super 키워드
+128. super 키워드 - "호출"
+129. super 호출시 주의사항
+130. super 키워드 - "참조"
+
+[MAIN]======================================================================================
+76. 일급객체?
+
+    : 일급객체란 다음 4가지의 조건을 모두 만족하는 객체이다.
+
+            1) 무명의 리터럴로 생성 가능하다. 즉, "런타임에 생성 가능하다"  [무명이 아니라면, 런타임 이전에 생성된다.(호이스팅에 의하여)]
+            2) 변수나 자료구조(객체,배열 등)에 저장 할 수 있다.
+            3) 함수의 매개변수에 전달할 수 있다.
+            4) 함수의 반환값 으로 사용할 수 있다.
+           
+    => 그러므로 "함수"는 "일급객체이다"
+
+77. 일급객체인데 어떻게하라고?
+   
+    : 일급객체이므로, "함수" 와 "객체"는 동일하게 사용 할 수 있다.
+
+        추가적으로 "함수" 는 객체와는 달리, "호출도 가능하다"
+
+78. 함수는 "객체"이므로, "프로퍼티" 를 가진다.
+
+    함수의 프로퍼티는" 5가지의 데이터 프로퍼티", "1가지의 접근자 프로퍼티를 가진다".
+
+        * 접근자 프로퍼티는 아직 뭔지 잘 모르겠으니까...
+
+    데이터프로퍼티
+        1) arguments : 함수에 들어가는 "arguments 객체"를 반환 (단, 지역변수로, 함수 내에서만 사용가능하다.)
+                * 파라미터보다, 부족한 인수나, 넘치는 인수가, 화면에는 표기되지 않지만, arguments 프로퍼티에는 저장된다.
+                * arguments 객체는 "배열이 아님을 명심"
+                ** arguments 객체는, 매개변수를 확정할 수 없는, "가변 인자 함수" 를 구현할 때 유용하다.
+
+                        function sum() {
+                            let res = 0;
+                            for (let i = 0; i < arguments.length; i++) {
+                            res = res + arguments[i];
+                            }
+                            return res;
+                        }
+                       
+                        console.log(sum(1, 2, 3));
+
+        2) caller   :  안쓴다 이제
+
+        3) length   : 선언한 매개변수의 개수를 가르킨다.        console.log(sum.length);            // 0
+
+        4) name     : "함수 이름" 을 알려준다.              
+                const msFunction = function add(){...}       console.log(msFunction.name)    // add
+
+        5) prototype : "불리언 타입으로" 생성자 함수로 호출 가능한, "constructor 내부메서드를 가지고 있는 함수 만이, true 로 나온다."   ***
+                            * constructor 내부메서드를 가지고 있는 함수 : 화살표함수, 무명의 리터럴 함수 를 제외한 함수전부
+
+78. 추가. "오로지 함수 객체 만이", prototype 을 가진다.(상속을 위한) ==  constructor 내부메서드를 가지고 있는 것은 "함수 객체 뿐이다"
+
+79. "자바스크립트"는 "명령형, 함수형, 프로토타입 기반 객체지향 프로그래밍을 지원하는 "멀티 패러다임 프로그래밍이다"
+
+80. 다시보는 "객체지향 프로그래밍 한줄 요약"
+    : 객체 지향 프로그래밍은, "상태를 나타내는 상대 데이터와, 동작은 나타내는 논리" 를 "하나의 객체처럼 취급" 하여,
+        "한가지 역할을 수행하는 객체들"의 집합(조합)으로, "프로그램을 구현하는 프로그래밍"
+
+81. "상속" 과 "프로토타입"
+
+    : 생성자함수를 만들고, 인스턴스를 생성하였다.
+     
+        function Circle(radius){
+            this.radius = radius;
+            this.getDiameter = function(){
+                return this.radius *2
+            }
+        }
+
+        cosnt circle1 = Circle(5)
+        const circle2 = Circle(10)
+            ...
+
+    "이 인스턴스들은, 전부! getDiameter 라는 메서드를 소유한다." 빵틀에서, 빵을 찍어내듯
+
+    이 행위는, "똑같은 메서드를 무한 복사 하는 것이므로" "메모리에 악영향을 끼친다."
+
+    [그 행위를 막기 위해서는 "상속" 을 한다.]
+        : 상속은 객체의 프로퍼티나 메서드를 다른 객체가 상속받아 그대로 사용하는것이다.
+            즉, "복사가 아니라, 거기있는 것을 그냥 쓰는것이다."
+
+82. 상속할 함수를 만드는 방법 [ 생성자함수.prototype.메서드이름 = function(){ ... }]
+    : 위의 함수의 메서드를 "상속할 메서드" 를 만든다.
+        ==> "생성자함수를 다시불러", "prototype 프로퍼티에 접근"해, "함수를 만든다".
+
+        function Circle(radius) {
+            this.radius = radius;
+-           Circle.prototype.getDiameter = function () {
+                return this.radius * 2;
+            };
+        }
+       
+        const circle1 = new Circle(5);
+       
+        console.log(circle1.getDiameter());
+
+    ==> 이제 이 인스턴스들은, 생성자함수의 메서드를 "복사 하지 않고", "상속 (=공유)" 한다.
+       
+83. 프로토타입 객체 (prototype) 은 "상속" 을 구현하기 위해 사용된다.
+    : 프로로타입 객체에, 접근하는 방법은, " __proto__" 접근차 프로퍼티를 사용하는 것이다.
+
+        * 하지만 "접근자 프로퍼티" 는 "직접적인 접근은 불가능하다."
+
+        어렵다...
+
+84. "상속자(부모)" 를 선택하기, 교체하기! [ getPrototypeOf , setPrototypeOf ]
+    :  "자식" 은 내가 "상속 받고자 하는 부모" 를 확인하고, 교체 할 수 있다.
+
+       
+
+        1) 부모 확인 => "프로토타입 취득"   => Object.getPrototypeOf(자식)
+
+            const obj = {}
+            const parent = { x : 1 }
+
+            Object.getPrototypeOf(obj)
+
+        2) 부모 교체 => "프로토타입 교체"   => Object.setPrototypeOf(자식, 부모)
+
+            const obj = {};
+            const parent = { x: 1 };
+           
+            Object.setPrototypeOf(obj, parent);
+           
+            console.log(obj.x);     // x = 1
+           
+85. ESLint 와 Strict Mode
+
+    : Strict Mode 는, 언어의 문법을 "완벽하게" 지키지 않으면, 오류가 발생한다.
+        이는, "잠재적 오류를 미연에 방지" 하는 효과가 있다.
+
+    : ESLint 는 더 나아가, "문법과, 코딩컨벤션" 도, 정의하고 강제할 수 있기 때문에, 상위 호환이라 할 수 있다.
+
+86. Strict Mode 의 사용
+
+    1) 전역의 선두에 use strict; 를 사용    // 권장되지 않음
+
+            use strict;
+               
+            function ms(){
+                ...
+            }
+   
+    2) 함수의 선두에 use strict; 를 사용
+
+            function ms(){
+                use strict;
+                ...
+            }
+       
+87. Strict Mode 의 기능
+
+    1) 암묵적 전역 방지 : 선언하지 않은 변수를 참조하면 오류
+
+    2) 매개변수 이름의 중복 사용 : function( x, x ) {...} 오류
+
+    3) with 문의 사용   : 잘모르는데 사용하면 오류
+
+    4) 일반함수에서 this 를 사용하면 : undefined 이 나온다.
+
+        * 일반모드에서 이러면 "window" 가 잡힌다.
+
+            function ms() {
+                console.log(this);
+            }
+           
+            ms()        // Window { ... }
+
+
+88. 자바스크립트 객체의 분류
+
+    1) 표준 빌트인 객체
+        : ECMAScript 사양에 정의된 객체로, "자바스크립트 실행환경(브라우저, Nodejs ...)" 와는 "관계 없이" 언제나, 전역에서, 사용가능하다.
+            "별도의 선언이 필요 없고, 전역변수처럼 언제나 참조"가 가능하다.
+
+    2) 호스트 객체
+        : ECMAScript 사양에 정의되지 않은 객체로, 브라우저나, Nodejs 같은 "자바스크립트 실행환경" 에서 "별도로 제공하는 객체이다"
+            "브라우저" 에서는 , "fetch", "DOM", "BOM", "SVG","Canvas" 등... "클라이언트 사이드 Web API 로 제공"
+            "Node.js" 에서는, "고유의 API 를 호스트 객체로 제공한다."
+
+    3) 사용자 정의 객체
+        : 사용자가 직접 정의한 객체이다.
+
+89. 표준 빌트인 객체
+    : 표준 빌트인 객체는, "Object", "String", "Number", ... "Date", "Math", "Array", "Map/Set" ... "Function"...
+            등, 40여가지 표준 빌트인 객체를 제공하며
+
+        Math, Reflect, JSON 을 제외한 "모둔 표준 빌트인 객체는" "생성자 함수 객체이다."
+
+            const strObj = new String("Lee")
+            console.log(typeof strObj)          // object       ==> 생성자 함수로 호출했으니, 객체가 반환되었다.
+
+            const numObj = new Number(54)
+            console.log(typeof numObj)          // object       ==> 이하동문
+
+            const date = new Date();
+            console.log(typeof date)            // object       ==> 이하동문
+
+                            ...
+
+90. 굳이! 왜 표준빌트인 객체를 사용하여, string, number 등을 만드는가? 그냥 원시값으로 만들면 되는데?
+    : 동작 원리 때문에 그렇다.
+
+        원시값도 객체처럼 사용 할 수 있다.
+
+            const str = "hello"
+            console.log(str.toUpperCase())      // HELLO    
+            console.log(str.length)             // 5
+
+        이는, 자바스크립트가, 암묵적으로 "원시값을 객체처럼" 생성하고, 프로퍼티와 메서드에 접근해, 호출하고 다시 원시값으로 돌리는 것이다.
+
+        이때, 암묵적으로 사용되고, 접근되는 것이, "표준 빌트인 객체 String()" 이다.
+
+        같은 원시값인, num, boolean 도 마찬가지로 작용된다.
+
+91. 전역객체
+    : 런타임 이전, 자바스크립트 엔진에 의해 "어떤 객체보다 먼저 생성되는 특수한 객체이며, 어디에도 속하지 않은 최상위 객체이다."
+
+        "브라우저 환경"에서는 "window" 로 불리우고
+        "node 환경"에서는 "global" 이 전역객체를 가르킨다.
+
+    전역객체는, 전역객체 이름을 생략하고, 사용 가능하다
+
+        window.Infinity ==> Infinity
+        window.NaN      ==> NaN
+        window.console  ==> console
+
+92. 전역객체의 여러가지 프로퍼티
+
+    Infinity    => 무한수를 나타냄
+    NaN         => Not A Number
+    undefined   => undefined
+
+    isFinite     => 유한수(2,3 ...)면 true,  무한수 (3.142232...), NaN 이면 false  
+        isFinite(Math.PI)   => true
+        isFinite(3)         => true
+
+        isFinite(Infinity)  => false
+        isFinite("hello")   => false
+
+    isNaN       => 숫자가 아닌지 맞는지 확인
+        isNaN(NaN)  => true
+        isNaN(10)   => false
+
+    parseFloat  => 문자열을 실수로
+        parseFloat("3.14")  => 3.14
+        parseFloat("hi")    => NaN
+
+    parseInt    => 문자열을 정수로
+
+        parseInt("10.2")    => 10
+        parseInt(10.66)     => 10
+
+        parseInt("10", 2)   => 10을 2진수로 해석하여 정수로 반환        => 2
+        parseInt("10", 8)   => 10을 8진수로 해석하여 정수로 반환        => 8
+
+    IncodeURI(uri)   => uri를 "어떤 시스템에서도 읽을 수 있는", "아스키 문자 셋" 으로 변환하는 것
+
+    DecodeURI(uri)   => "아스키 문자 셋" 을 다시, "일반적 문자열"로 변환
+
+93. 암묵적 전역
+    : 아래 함수를 보자
+
+            function ms(){
+                y= 20
+            }
+
+            ms()
+
+            console.log(y)  // 20
+
+    "y 는 선언된적이 없다", 어떻게 된것일까?
+
+    "자바스크립트는" 전역, 스코프내 어디에서도 y 를 찾을 수 없어, "y를 전역 객체의 프로퍼티"로 생성한다.    window.y =20
+
+    그렇게 y 가 "암묵적 전역"변수가 된다.
+
+94. 자기 참조 변수 this
+
+    : 자기 참조 변수 this 는, "자신이 속한 객체" 혹은 "자신이 생성할 인스턴스" 를 가르키는 "자기 참조 변수" 를 말한다.
+
+        "this가 가르키는 값" = "this 바인딩" 이라고 한다.
+
+        [1) 일반 함수에서의 this]
+
+            function ms(){
+                console.log(this)
+            }
+
+            ==> this는 window, 즉, "전역" 을 가르킨다.
+
+        [2) 일반 객체에서의 this]
+               
+                const circle = {
+                    radius : 5,
+                    getDiameter(){
+                        return 2 * this.radius
+                    }
+                }
+
+            ==> this 가, 객체 자신을 가르킨다.
+
+        [3) 생성자 함수에서의 this]
+
+                function Circle(radius){
+                    this.radius = radius;
+                    Circle.prototype.getDiameter = function(){
+                        return 2* this.radius                       // 여기의 this 는
+                    }
+                }
+
+                const circle1 = new Circle(5)  
+                console.log(circle.getDiameter())                   // "자신이 생성할 인스턴스, circle1" 을 가르킨 것이다.
+
+            ==> this 가, "자신이 생성할 인스턴스" 를 가르킨다.
+
+                ==  생성자 함수에서 this는 "호출한" "인스턴스"의 "메서드"를 가르킨다.
+
+        [4) 메서드 의 this]
+
+                var value = 1;
+
+                const obj = {
+                    value: 100,
+                    ms: function () {
+                        console.log(this.value);
+                    },
+                };
+               
+                obj.ms();               // 100
+
+            => 결국 일반객체와 다름없이, "호출한" "객체 자신"을 가르킨다.
+
+                ** 생성한 이 아니고 "호출한 객체 자신이다". 헷갈리면 안된다.
+
+        [5) 콜백함수 this]
+
+                var value = 1;
+
+                const obj = {
+                    value: 100,
+                    ms: function () {
+                        console.log(this.value);
+                        setTimeout(function(){
+                            console.log(this.value)         // 콜백함수의 this
+                        },100)
+                    },
+
+                };
+               
+                obj.ms();  
+
+            ==> "콜백함수도, 일반함수 취급하기 때문에, "window" 즉,글로벌이 this 에 바인딩된다."
+               
+       
+
+95. 자기 참조 변수 this 의 Strict Mode 에서의 사용
+
+    : 사실 this 는, "객체의 프로퍼티나 메서드를 참조하기 위한 자기 참조 변수" 이므로,
+        일반적으로는, "객체의 메서드 내부" 혹은 "생성자 함수 내부" 에서만 의미가 있다
+
+    그러므로, strict mode 가 적용된 "일반함수의 내부에서 this" 는 사용 불가능하다(가능은 하지만 undefined).
+
+96. 렉시컬 스코프 (= 정적 스코프)
+
+    : 함수를 "어디에서 호출(호출)" 하였는가 보다는, 함수를 "어디에서 선언(정의)" 하엿느냐가, "스코프 결정"에 영향을 주는 스코프 결정 방법
+
+            const x = 10;
+
+            function outerFunction() {
+                const x = 1;
+                innerFucntion();
+            }
+           
+            function innerFucntion() {
+                console.log(x);
+            }
+           
+            innerFucntion();    // 10
+            outerFunction();    // 10
+           
+
+        => 어? 뭐지?
+            innerFucntion console.log(x) 에는 "선언된 시점의 x 즉, x = 10" 이 들어간다.
+            "first" 에서 "second" 를 "호출 하던말던",
+            어차피 innerFucntion x = 10 이 적용된 스코프( global ) 에서 "선언 되었기 때문에", 스코프는 "전역의 x" 즉, 10 이 되는것이다.
+
+
+    반) "동적 스코프"
+        : 호출시점이 함수에 영향을 준다.
+
+
+96. [추가] "스코프 체인"
+
+    : 스코프 체인은, 자바스크립트가, "변수를 검색하는 방법"
+       "하위 스코프부터, 상위로 올라면서 찾는다."
+
+98. 실행 컨텍스트
+
+    : 실행 컨텍스트 는 "코드를 실행하는데 필요한 환경을 제공"한다. 또한 "그 실행 결과를 관리"한다.
+   
+    : 실행 컨텍스트는 함수를 실행할때 생성된다.
+
+99. 실행컨텍스트의 기능과 순서
+
+    1. "전역 실행 컨텍스트 생성" 후, "실행 컨텍스트 스택"에 집어넣음
+    2. "전역 렉시컬 환경 생성" 후, "전역 실행 컨텍스트에 바인딩"
+
+        3. "전역 환경 레코드" -> 전역 렉시컬 환경의 구성성분
+            : "전역 스코프" + "전역 프로퍼티, 전역 함수, 전역 객체" 를 제공
+
+            4. "객체 환경 레코드. 선언적 환경 레코드" -> 전역 "환경 레코드"의 스코프들
+
+                 객체 환경 레코드 : var 관리
+                 선언전 환경 레코드 : const,let 을 관리한다.
+
+        => [환경 레코드 생성]
+
+    5. "this 바인딩"
+        : "전역 환경 레코드" 안에, this가 바인딩된다.
+            ==> 일반 함수에서 this 를 호출하면, 전역객체가 바인딩된다.(window)
+
+        => [환경 레코드에 this 바인딩]
+
+    6. "외부 렉시컬 환경" 에 대함 참조 결정
+        : 외부렉시컬 환경은 "상위 환경"을 말한다. "전역 렉시컬 환경"의 경우 상위가 없으므로, null 을 참조한다.
+
+            * 만약 존재한다면, "단방향 링크드 리스트"인, "스코프 체인" 을 구현한다.
+
+    7. "전역 코드 실행"
+
+        1) 식별자 검색 : 실행중인 "실행 컨텍스트 안의 렉시컬 환경"에서 "식별자를 검색"한다. 만약 없다면, "상위 환경(외부 렉시컬 환경)" 에서 검색한다.
+        2) 실행
+
+    ==> 실행중, "함수 코드" 를 만나면, "함수 안에서 다시 실행 컨텍스트 생성부터, 함수 코드 실행까지 실시한다."
+
+    8. "함수 실행 컨텍스트 생성" 후 "실행 컨텍스트 스택" 에 집어넣음
+
+    9. " 함수 렉시컬 환경 생성" 후 ...
+
+    ==> 함수 코드 실행이 종료되면, "함수 실행 컨텍스트"는, "실행 컨텍스트 스택"안에서 "제거된다"
+        다만, "컨텍스트가 사라졌다고 렉시컬 환경까지 제거되는 것은 아니다"
+        누군가가 그 "함수 렉시컬 환경을 참조하고 있다면" 가비지 컬렉터에 의해, 공간 확보 해제 가 일어나지 않는다.
+
+
+[총 정리]
+   
+    "실행컨텍스트"란, 코드를 실행하는 환경을 생성, 실행후 결과를 관리 하는 요소이다.
+
+    "코드의 실행 순서"는, "전역 코드, 그 안의 함수 코드" 순이며
+
+        "전역 코드가 실행"될때에는, "전역 실행 컨텍스트" 가 생성되어, "실행 컨텍스트 스택"안에 쌓이고,
+
+            "전역 실행 컨텍스트 안"에 "전역 렉시컬 환경을 생성"한다.
+       
+                "렉시컬 환경 안"에는 "환경 레코드(스코프, 변수,함수,객체)" 를 생성한다.
+
+                후에, "환경 레코드" 안에, "this 바인딩"을 실시하고,
+
+            "외부 렉시컬 환경"에 대하여 참조를 결정( 스코프 안에 있다면, 사용, 없다면, "스코프 체인"을 통해, 상위 렉시컬 환경 참조) 하고
+
+        "전역 코드를 실행한다."
+
+    "실행할 때"에는 "식별자 검색"을 실시하는데, "식별자 검색" 은 "해당 컨텍스트 안의 렉시컬 환경(전역 컨텍스트의 렉시컬 환경)" 에서 검색한다.
+        없다면, "상위 렉시컬 환경"에서 검색한다.
+
+    "중간에 함수를 만나면", 전역 코드의 실행을 잠시 중지하고, "함수 실행 컨텍스트" 를 생성하고 과정을 반복한다.
+
+
+    *** 결국 가장 중요한 것은, "해당 스코프의 실체"는 "해당 스코프의 렉시컬 환경"이다.
+        "렉시컬 환경 안에서, 참조하고, 생성하고, 바인딩한다."
+
+99. 렉시컬 환경
+    : 렉시컬 스코프를 따를때, 각 지역 스코프에 해당하는, 환경
+            cosnt x = 1
+
+            function ms(){
+                const x =2
+                innerFucntion()
+            }
+
+            innerFucntion(){
+                console.log(x)
+            }
+
+        => 전역 렉시컬환경(코드평가, 실행) -> 함수 내 렉시컬 환경(코드평가, 실행) -> 함수 내 렉시컬 환경 종료
+            -> 전역 렉시컬 환경( 마저 실행 )...
+
+
+100. 함수는 자신의 내부 슬롯"에, " 자신이 정의된 환경(위치)"을 저장한다., "자신이 평가 될 때!" 저장한다. [실행 이전임.]
+    : 그래서, 렉시컬 스코프를 따를 수 있다.
+           
+
+101. 클로저
+
+    : "외부함수 안에 중첩된 함수" 가 존재할 때
+        "중첩된 함수"가, "외부함수" 보다 더 "오래 생명을 유지 할 때" 그 중첩된 함수를 "클로저" 라고 부른다.
+
+    클로저가 나오면, "외부함수의 컨텍스트"는 이미 제거되고, "외부함수의 렉시컬환경"만이 남아, "클로저가 그 렉시컬 환경의 변수를 참조한다."
+
+102. 클로저의 조건
+
+    1) "내부함수"는, "외부함수 안의 변수"를 "참조"하고 있어야 한다.
+        그렇지 않으면, 내부함수는 외부함수보다 오래 살아남을 수 없다.
+
+    2) "외부함수"는, "내부함수를 반환 해야한다."
+        그렇지 않으면, 내부함수는 외부함수보다 오래 살아남을 수 없다.
+
+        <클로저 코드>
+
+            function outer(){
+                const x = 10
+
+                const inner = function(){
+                    console.log(x)
+                }
+                return inner
+            }
+            const closerFunction = outer()
+
+            closerFunction()
+
+        "중첩함수(내부) inner" 가 outer 안에 정의되어 있고,
+        "내부함수 inner" 는 outer 안의 "변수를 참조"하고 있으며
+        "내부함수 inner" 는 "외부함수에 의해 반환되었다."
+
+        => 외부함수는 실행되었지만, "남은것은 내부 함수 뿐"(return 된 것은 내부함수 뿐이니까) 이다.
+           
+            "외부함수 보다 내부함수가 더 오래 살아남았기에", 중첩된 내부함수 inner 는 "클로저"이다.
+
+103. 클로저 만들기  feat. 즉시 실행 함수
+
+        const increase = (function () {
+            let num = 0;
+            return function () {
+                return ++num;
+            };
+        })();
+
+        console.log(increase());
+        console.log(increase());
+        console.log(increase());
+
+    increase 함수는, 결국 return 하는 값은, "내부함수 function"이다. (사용할때마다, num => 1, 2, 3 ...)
+    "내부함수 function은, 외부함수의 변수를 참조한다." => 클로저이다.
+
+    함수가 이상하게 보이는 이유는, 함수 를 소괄호로 묶고(function...), () 를 사용하여, "함수를 정의와 동시에, 사용 한 것 뿐이다"
+    또한 자바스크립트의 암묵으로 [함수이름을 호출할때, 식별자로, 그 함수이름을 변수에 담아주는] 행위를 했기 때문에, 이상해보이는 것이다.
+
+
+    함수의 식별자와, 함수의 이름을 전부 다 써서,"풀어쓴다면"
+
+        const increase2 = (function increase2() {
+            let num = 0;
+            return function () {
+                return ++num;
+            };
+        })();
+
+        console.log(increase2());
+        console.log(increase2());
+        console.log(increase2());
+
+104. 클로저의 사용이유
+
+    위 함수 안의 "num은 다른 함수로는 건들 수 없고", 안에 형성된 "내부함수에서만, 상태변경을 허용" 한다.
+    이는, 외부에 의해, "상태가 의도치 않게 변형되는 것을 막는다."
+
+105. 클래스
+    : 자바스크립트는, "클래스 기반 객체지향 언어" 가 "아니다"
+        자바스크크립트는, "프로로타입 기반 객체 지향 언어이다"
+
+    사실 자바스크립트의 "클래스"는 그다지 필요는 없는 존재이며, 다른 객체지향 프로그래밍을 배우는 사람의 편의를 위해 제공된다 볼 수 있다.
+
+    이는, "프로토 타입 기반"패턴을, "클래스 기반 패턴" 처럼 사용할 수 있도록 하는 "문법적 설탕" 이라 볼 수 있다.(또한 아니다.)
+
+106. JS 에서 클래스가 문법적 설탕인 이유
+
+    클래스는 "상속"을 구현하고, "반복성"을 구현하며, "메모리의 효율성"을 위해 구현된다.
+
+    자바스크립트는 "생성자 함수" 를 이용해, "반복성"을 표방하며,
+        "PROTOTYPE 메서드"를 통해, "상속"을 구현하고, "메모리를 효율적으로 다룰 수 있다".
+
+    클래스는 "private" 키워드 를 통해, 정보은닉을 할 수 있다.
+
+    자바스크립트는 "클로저" 를 통해 정보 은닉을 할 수 있다.
+
+107. 그럼에도 불구하고, 클래스와 생성자 함수의 차이
+
+    1) 클래스는 new 를 쓰지 않으면 오류, 생성자는 일반함수로 호출
+
+    2) 클래스는, "extends" 와 "super" 키워드를 통해, "상속 후 확장 가능"
+
+    3) 클래스는 호이스팅이 없는것처럼 동작(호이스팅은 되나, let, const 처럼, 초기화가 바로 되지 않아, 사용은 불가능하다).
+        생성자 함수는 호이스팅 발생(함수 선언문으로 만들기 때문에 "함수 호이스팅" 발생)
+
+    4) 클래스 내의 모든 코드는 strict mode 가 실행된다. 생성자는 아니다.
+
+    5) 클래스는 열거되지 않는다.
+
+    ==> 이러한 차이 때문에, "클래스"도  "새로운 객체 생성 메커니즘" 으로 보아도 좋다. [특히나 상속과 확장 그리고 캡슐화(정보 은닉)]
+
+108. 클래스의 생성
+
+    : 비교하며 알아보자
+
+
+    <생성자함수>
+
+            function myFunction(name) {
+                this.name = name;
+               
+                myFunction.prototype.getName = function () {        //상속매서드
+                console.log(this.name);
+                };
+                myFunction.sayHello = function () {                 //정적메서드
+                console.log("Hello");
+                };
+            }
+           
+            const ms = new myFunction("no");
+            ms.getName();
+       
+    <클래스>
+
+            class myClass{
+                constructor(name){
+                    this.name = name                        //생성자 (인스턴스 생성 및 초기화를 위한 장치)
+                }
+                getName(){
+                    console.log(this.name)                  //상속메서드
+                }
+                static sayHello(){
+                    console.log("hello")                    //정적메서드
+                }
+            }
+
+            const ms = new myClass("no")
+            ms.getName()
+
+109. 클래스도 함수이다
+    : 특히나 new 로 호출하는, "생성자 함수"이다.
+
+    console.log(typeof myClass);        //function
+
+
+110. 클래스의 구성성분
+
+    1) constructor
+    2) 프로토타입(상속) 메서드
+    3) 정적 메서드
+
+111. constructor
+
+    1) constructor 없이 Class를 정의하면, 빈 객체가 인스턴로 나온다.
+
+            class msClass{
+            }
+
+    2) constructor 에, 파라미터 없이, "인스턴스 프로퍼티" 를 추가하면, "고정된 인스턴스로 초기화 되어, 고정된 객체값이 나온다".
+
+            class msClass{
+                constructor(){
+                    this.name = "이름"
+                }
+            }
+
+    3) constructor 에, 파라미터를 사용하여, "초기값을 전달 할 수 있다."
+
+   
+            class msClass{
+                constructor(파라미터){
+                    this.name = 파라미터
+                }
+            }
+
+112. 프로토타입(상속) 메서드
+
+    : "생성자 함수"는, "스스로를 호출"하고, "prototype 메서드를 호출"해, "함수이름을 붙여 함수를 만들어야, 상속"된다.
+
+    : "클래스"는 그냥 "함수를 만들면, 자동으로 상속 함수가 된다."
+
+113. 정적 메서드
+
+    : "생성자 함수"는, "스스로를 호출"하고, "함수이름만 붙여 함수를 만들면", "정적 메서드가 된다."
+
+    : "클래스"는 "static" 을 붙여, 함수를 만든다.
+   
+
+114. 프로토타입 메서드와 정적 메서드의 차이
+
+    1) "정적 메서드"는," 클래스"로 "호출"한다.                      // "프로토타입 메서드"는 "인스턴스"로 "호출"한다.
+
+    2) "정적 메서드"는 "인스턴스 프로퍼티" 를 참조 할 수 "없다".    // "프로토타입"은 "인스턴스 포로퍼티"를 참조 할 수 "있다."
+
+        static sayHello() {
+            console.log("hello" + this.name);
+        }
+
+        myClass.sayHello()              // hellomyClass     ==> "인스턴스 프로퍼티 참조가 안됌"
+
+    3) "정리"
+
+            class myClass {
+                constructor(name) {
+                    this.name = name;
+                }
+           
+                getName() {
+                    console.log(this.name);
+                }
+           
+                static sayHello() {
+                    console.log("hello");
+                }
+            }
+           
+            myClass.getName("no");          //불가능    [인스턴스 생성 없이, 프로토타입 메서드 호출]
+           
+            const ms = new myClass("no");   //가능      [인스턴스 생성 후, 프로토타입 메서드 호출]
+            ms.getName()                                인스턴스가, 프로토타입메서드를 상속 받은 후에 사용 가능하기 때문
+           
+            myClass.sayHello();             //가능      [ 인스턴스 생성 없이, 바로 호출 가능]
+
+
+115. 정적 메서드의 this 참조가 불가능한 이유 [ this 바인딩이 달라서 ]
+
+    : "생성자 함수"의 this는, "자신이 생성할 인스턴스" 즉, "호출한" [인스턴스의 메서드]와 바인딩한다.
+   
+        "생성자 함수와 같은 구동방식의 클래스"의 경우, 똑같이, this 는 "호출한" [인스턴스의 메서드와 바인딩]된다.
+
+        "프로토타입 메서드"의 경우에는, "자신이 호출한 인스턴스가 존재"하여, this는 호출한 인스턴스에 바인딩된다. (인스턴스로 호출하기 때문에)
+
+        "정적 메서드"의 경우에는, "클래스로 호출"하기 때문에, [this는 호출한 클래스와 직접 바인딩된다.] (인스턴스 프로퍼티를 참조할 수 조차 없음)
+
+116. 표준 빌트인 객체의 정적 메서드
+
+    : Math.max(1,2,3)
+    : Number.isNaN(NaN)
+    : JSON.stringify({})
+
+            ...
+
+    전부 직접 클래스(혹은 생성자함수)를 호출하여, 사용한다.
+
+117. 클래스의 인스턴스 생성 과정
+
+    1) constructor 의 내부코드가 실행되기 전, "빈 인스턴스(객체)가 생성되고 this 를 바인딩"
+
+    2) "constructor 의 내부코드가 실행", 인스턴스를 초기화(초기값 할당)
+
+    3) 완성된 인스턴스가 "암묵적으로 반환"
+
+        ** 마치 생성자함수 객체가 return 없이도 반환되는 형태와 동일
+
+118. 접근자 프로퍼티
+
+    : 접근자 프로퍼티는, "접근자 함수 set(setter)과 get(getter) 를 포함하는 개념이다."
+
+    : 접근자 프로퍼티는, "자체 값은 없으나", "다른 데이터"의 "프로퍼티 값을 읽거나 저장"할때 사용하는 접근자 함수로 구성되어있다.
+
+    : "get(getter) 함수"는, 값을 "참조"할때, "set(setter) 함수"는 값을 "저장"할때, 사용한다.
+
+
+            class Person{
+                constructor(firstName,lastName){
+                    this.firstName = firstName
+                    this.lastName = lastName
+                }
+
+                get fullName(){                                         // 값을 참조
+                    return `${this.firstName} ${this.lastName}`
+                }
+
+                set fullName(name){                                     // 값을 저장
+                    [this.firstName, this.lastName] = name.split(" ")
+                }
+
+            }
+
+            const me = new Person("ms","choi")
+
+            console.log(me.fullName)        // ms choi => 접근자 프로퍼티 fullName 에 "접근" 하면, "getter 함수"가 호출. [접근]
+           
+            me.fullName = "B lonard"        //  접근자 프로퍼티 fullName 에 "저장" 하면 "setter 함수"가 호출 [저장]
+           
+            console.log(me.fullName);       // B lonard => 접근자 프로퍼티 fullName 에 "접근" 하면, "getter 함수"가 호출. [접근]
+
+    ** "setter 함수의 파라미터가, setter 함수에 저장되는 값이 된다."
+
+
+119. 파라미터 없는 "클래스 필드"
+
+    : 최신버젼의 노드와, 브라우저에서는, "constructor 와 this바인딩이 없는 클래스 를 생성할 수 있다."
+
+            class Person {
+                firstName = "firstName";
+                lastName = "lastName";
+            }
+           
+            const ms = new Person();
+           
+            console.log();
+       
+    단, constructor 가 없다면 this는 사용해서는 안된다.
+        this  는 오로지, constructor 메서드 안에서만 유의미한 바인딩을 이룬다.
+
+        ** "클래스 필드" : "메서드 내부"(constructor, prototype 메서드, staitc 메서드)가 "아닌" 클래스 내부의 "필드"
+
+120. 접근 제한자 private 를 사용한 "클래스 필드"
+
+    : private 를 사용하면, "외부에서 참조가 불가능 하게 만들 수 있다"
+
+    <방법> : #을 사용하여, Private field 를 만들어준다.
+
+        class Person {
+            #diameter = "";                     // 클래스 field에, private field 정의
+       
+            constructor(diameter) {
+                this.#diameter = diameter;      // private field 를 참조하여, 인스턴스 생성
+                this.diameterP = diameter;
+            }
+       
+            getSquare() {
+                return this.#diameter * this.#diameter;
+            }
+        }
+       
+        const square1 = new Person(5);
+       
+        console.log(square1.getSquare());
+        console.log(square1.#diameter);         // private field ... 오류 [ private 값은 외부에서 참조 할 수 없다.]
+        console.log(square1.diameterP);         // 일반 값은 public 하다
+       
+
+-   ** 반드시 "타입스크립트를 배워, 접근 제한자 public, private, protected 를 전부 써보자"
+
+121. static 필드도 정의 가능하다
+
+        class myMath {
+            static square = 50;                 // static field
+       
+            static #diameter = 30;              // private 접근제한자 사용한 field
+       
+            static mathDouble() {
+                return myMath.#diameter * 2;    // 인스턴스 참조는 불가능하지만, static field 이므로, 자신을 불러 field 값을 참조 할 수 있다.
+            }
+        }
+       
+        console.log(myMath.square)              // 50
+        console.log(myMath.#diameter)           // syntax error (private)
+        console.log(myMath.mathDouble())        // 60
+
+122. 클래스의 상속과 확장
+
+    : "생성자 함수" 와의 가장 큰 차이점이 나타난다. 바로 "상속과 확장"이다.
+
+        생성자 함수에서 구현하는 prototype 과는 별개로, 클래스는 "상속과 확장"이 가능한 키워드 "extends" 를 지원한다.
+
+            class Base{}
+
+            class Derived extends Base{}
+
+123. 부모 클래스 = super class = base class
+
+124. 자식 클래스 = 파생(derived) class = sub class
+
+125. 동적 상속과 확장
+   
+    : "삼항연산자" 등을 이용하여, "조건에 따라 다른 상속" 을 할 수 있다.
+
+        class Base{}
+
+        class Base2
+
+        let condition = true
+
+        class Derived extends (condition ? Base : Base2){}
+
+126. 생성자 함수를 상속받고 확장 할 수도 있다.
+
+        function Base() {}
+
+        class Derived extends Base{}
+
+127. super 키워드
+   
+    : super 키워드는 함수처럼 "호출" 할 수도 있고, this 처럼 "참조" 할 수도 있는 특수 키워드이다.
+
+    1) super 키워드를 "호출" 하면, "super class" 의 "constructor 를 호출"한다.
+
+    2) super 키워드를 "참조" 하면 "super class" 의 "메서드를 호출"
+
+128. super 키워드 - "호출"
+
+    : super 키워드를 "호출" 하면, "super class" 의 "constructor 를 호출"한다.
+
+
+            class Base {
+                constructor(a, b) {
+                this.a = a;
+                this.b = b;
+                }
+            }
+           
+            class Derived extends Base {
+                constructor(a, b, c) {
+                    super(a, b);
+                    this.c = c;
+                }
+            }
+           
+            const ms = new Derived(2, 3, 4);
+           
+            console.log(ms.c);
+           
+
+129. super 호출시 주의사항
+
+    1) 자식 클래스가, this 를 참조하려면 반드시 "super 키워드로 super class 를 호출 한 이후에 this 를 참조할 수 있다"
+
+            class Derived extends Base {
+                constructor(a, b, c) {
+                    this.c = c;             ==> super 가 호출되지 않았기 때문에, this 사용 불가능
+                }
+            }
+
+    2) super 키워드는 반드시 "자식 클래스의, constructor" 에만 사용 가능하다
+
+130. super 키워드 - "참조"
+
+    : "super 키워드를 참조" 하면, "super class 의 메서드가 호출"된다
+
+            class Base {
+                constructor(name) {
+                    this.name = name;
+                }
+           
+                sayHello() {
+                    return `hi ${this.name}`;
+                }
+            }
+           
+            class Derived extends Base {
+                constructor(name) {
+                    super(name);
+                }
+           
+                sayHi() {
+                    return `${super.sayHello()}`;               // super class의 메서드 호출
+                }
+            }
+           
+            const ms = new Derived("ms");
+           
+            console.log(ms.sayHi());

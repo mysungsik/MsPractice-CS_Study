@@ -1,0 +1,17 @@
+1. Flex 속성을 설명해주시오
+    display 속성을 flex 로 변경해 사용합니다.
+    기존 컨텐츠를 수평배치하는데 주로 사용합니다.
+    감싸고 있는 부모의 속성에,
+        display, flex-direction, align-item, flex-wrap 등의 속성으로, 자식들의 위치를 조절하고
+    자식의 속성에
+        flex-grow, flex-shrink 같은 크기나 순서의 속성을 정의합니다.
+
+        * flex-grow : 내부 공간의 크기를, 아이템의 크기보다 크게 만드는 속성 (0~...)
+        * flex-shrink : 0 으로 설정하면, 컨테이너가 작아져도, 아이템을 담은 박스가 찌그러지지않습니다.
+
+2. Box-Model 에 관하여 설명해주세요
+
+    content, padding, border, margin 순으로 구분되며,
+    패딩은 컨텐츠와 보더 사이의 간격
+    보더는 테두리
+    마진은 전체 박스 외부 의 보이지 않는 간격입니다.

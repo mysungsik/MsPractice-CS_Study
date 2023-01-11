@@ -1,12 +1,13 @@
-const obj1 = [
-  { x: 1, y: 5, z: 3 },
-  { x: 3, y: 3, z: 7 },
-];
+function* generatorFn() {
+  // * 을 붙이는 것을 잊지 말자.
+  console.log("안녕");
+  console.log("하이");
+  yield 1;
+  console.log("명식");
+  yield 0;
+}
 
-const sameId = obj1.find((item) => item.x === 1);
+const generator = generatorFn();
 
-console.log(sameId); // {x:1, y:5, z:3}
-
-sameId.y = 10;
-
-console.log(sameId); // {x:1, y:10, z:3}
+generator.next();
+generator.next();
